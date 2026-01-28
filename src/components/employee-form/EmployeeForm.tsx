@@ -1,0 +1,370 @@
+import React, { useState } from 'react';
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Container,
+  Fade,
+  Alert,
+  Snackbar,
+} from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import  { Formik, Form } from 'formik';
+import type { FormikProps } from 'formik';
+import * as Yup from 'yup';
+import {
+  ArrowBack,
+  ArrowForward,
+  Save,
+  PersonAdd,
+} from '@mui/icons-material';
+
+import { muiTheme } from '../../theme/muiTheme';
+import type { EmployeeFormData } from '../../types/EmployeeForm';
+import { initialFormData } from '../../types/EmployeeForm';
+import StepperHeader from './StepperHeader';
+import BasicDetailsStep from './steps/BasicDetailsStep';
+import PersonalDetailsStep from './steps/PersonalDetailsStep';
+import EducationalDetailsStep from './steps/EducationDetailsStep';
+import ProfessionalDetailsStep from './steps/ProfessionalDetailsStep';
+import FamilyDetailsStep from './steps/FamilyDetailsStep';
+import OtherDetailsStep from './steps/OtherDetailsStep';
+
+const steps = [
+  'Basic Details',
+  'Personal Details',
+  'Educational Details',
+  'Professional Details',
+  'Family Details',
+  'Others',
+];
+
+// Validation schemas for each step (except first step as requested)
+// const personalDetailsSchema = Yup.object().shape({
+//   personalDetails: Yup.object().shape({
+//     contactNumber: Yup.string()
+//       .matches(/^[0-9]{10}$/, 'Contact number must be 10 digits')
+//       .required('Contact number is required'),
+//     personalEmail: Yup.string().email('Invalid email format'),
+//     dateOfBirth: Yup.string().required('Date of birth is required'),
+//     emergencyContactNumber: Yup.string()
+//       .matches(/^[0-9]{10}$/, 'Emergency contact must be 10 digits'),
+//   }),
+// });
+
+// const educationalDetailsSchema = Yup.object().shape({
+//   educationalDetails: Yup.object().shape({
+//     educations: Yup.array().of(
+//       Yup.object().shape({
+//         course_name: Yup.string().required('Qualification is required'),
+//         university: Yup.string().required('University is required'),
+//         passing_year: Yup.string().required('Passing year is required'),
+//       })
+//     ),
+//   }),
+// });
+
+// const professionalDetailsSchema = Yup.object().shape({
+//   professionalDetails: Yup.object().shape({
+//     experiences: Yup.array().of(
+//       Yup.object().shape({
+//         previousCompany: Yup.string().required('Previous company is required'),
+//         designation: Yup.string().required('Designation is required'),
+//       })
+//     ),
+//   }),
+// });
+
+// const familyDetailsSchema = Yup.object().shape({
+//   familyDetails: Yup.object().shape({
+//     emergencyContactName: Yup.string().required('Emergency contact name is required'),
+//     emergencyContactRelation: Yup.string().required('Relationship is required'),
+//   }),
+// });
+
+const otherDetailsSchema = Yup.object().shape({
+  otherDetails: Yup.object().shape({
+    bankName: Yup.string().required('Bank name is required'),
+    accountNumber: Yup.string().required('Account number is required'),
+    ifscCode: Yup.string().required('IFSC code is required'),
+  }),
+});
+
+const validationSchemas = [
+  null, // No validation for Basic Details
+  null,
+  null,
+  null,
+  null,
+  otherDetailsSchema,
+];
+
+const EmployeeForm: React.FC = () => {
+  const [activeStep, setActiveStep] = useState(0);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
+
+  const handleNext = async (formik: FormikProps<EmployeeFormData>) => {
+    const currentSchema = validationSchemas[activeStep];
+    
+    if (currentSchema) {
+      try {
+        await currentSchema.validate(formik.values, { abortEarly: false });
+        setActiveStep((prevStep) => prevStep + 1);
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors: Record<string, unknown> = {};
+          err.inner.forEach((e) => {
+            if (e.path) {
+              const pathParts = e.path.split('.');
+              let current: Record<string, unknown> = errors;
+              for (let i = 0; i < pathParts.length - 1; i++) {
+                if (!current[pathParts[i]]) {
+                  current[pathParts[i]] = {};
+                }
+                current = current[pathParts[i]] as Record<string, unknown>;
+              }
+              current[pathParts[pathParts.length - 1]] = e.message;
+            }
+          });
+          formik.setErrors(errors);
+          formik.setTouched(
+            Object.keys(errors).reduce((acc, key) => ({ ...acc, [key]: true }), {})
+          );
+          setSnackbar({
+            open: true,
+            message: 'Please fill in all required fields correctly',
+            severity: 'error',
+          });
+        }
+      }
+    } else {
+      setActiveStep((prevStep) => prevStep + 1);
+    }
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevStep) => prevStep - 1);
+  };
+
+  const handleSubmit = (values: EmployeeFormData) => {
+    console.log('Form submitted:', values);
+    setSnackbar({
+      open: true,
+      message: 'Employee created successfully!',
+      severity: 'success',
+    });
+  };
+
+  const renderStepContent = (step: number, formik: FormikProps<EmployeeFormData>) => {
+    switch (step) {
+      case 0:
+        return <BasicDetailsStep formik={formik} />;
+      case 1:
+        return <PersonalDetailsStep formik={formik} />;
+      case 2:
+        return <EducationalDetailsStep formik={formik} />;
+      case 3:
+        return <ProfessionalDetailsStep formik={formik} />;
+      case 4:
+        return <FamilyDetailsStep formik={formik} />;
+      case 5:
+        return <OtherDetailsStep formik={formik} />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <ThemeProvider theme={muiTheme}>
+      <CssBaseline />
+      <Box
+        sx={{
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #F5F7FA 0%, #E4E8EE 100%)',
+          py: 4,
+        }}
+      >
+        <Container maxWidth="lg">
+          {/* Header */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+              mb: 4,
+            }}
+          >
+            <Box
+              sx={{
+                width: 56,
+                height: 56,
+                borderRadius: 3,
+                background: 'linear-gradient(135deg, #4F5BD5 0%, #7B84E4 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 20px rgba(79,91,213,0.4)',
+              }}
+            >
+              <PersonAdd sx={{ color: '#fff', fontSize: 28 }} />
+            </Box>
+            <Box>
+              <Typography
+                variant="h4"
+                sx={{
+                  fontWeight: 700,
+                  color: '#1A1F36',
+                  background: 'linear-gradient(135deg, #4F5BD5 0%, #7B84E4 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                Create Employee
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Fill in the details to add a new employee
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Stepper Card */}
+          <Card
+            sx={{
+              mb: 3,
+              borderRadius: 4,
+              boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+            }}
+          >
+            <CardContent sx={{ px: 4 }}>
+              <StepperHeader activeStep={activeStep} steps={steps} />
+            </CardContent>
+          </Card>
+
+          {/* Form Content Card */}
+          <Formik
+            initialValues={initialFormData}
+            onSubmit={handleSubmit}
+          >
+            {(formik) => (
+              <Form>
+                <Card
+                  sx={{
+                    borderRadius: 4,
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                    minHeight: 500,
+                  }}
+                >
+                  <CardContent sx={{ p: 4 }}>
+                    <Fade in={true} key={activeStep}>
+                      <Box>{renderStepContent(activeStep, formik)}</Box>
+                    </Fade>
+                  </CardContent>
+
+                  {/* Action Buttons */}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      p: 3,
+                      borderTop: '1px solid #E5E7EB',
+                      background: '#FAFBFC',
+                      borderBottomLeftRadius: 16,
+                      borderBottomRightRadius: 16,
+                    }}
+                  >
+                    <Button
+                      variant="outlined"
+                      onClick={handleBack}
+                      disabled={activeStep === 0}
+                      startIcon={<ArrowBack />}
+                      sx={{
+                        px: 4,
+                        py: 1.5,
+                        borderColor: '#E5E7EB',
+                        color: '#6B7280',
+                        '&:hover': {
+                          borderColor: '#4F5BD5',
+                          backgroundColor: 'rgba(79,91,213,0.05)',
+                        },
+                        '&:disabled': {
+                          borderColor: '#E5E7EB',
+                          color: '#D1D5DB',
+                        },
+                      }}
+                    >
+                      Previous
+                    </Button>
+
+                    <Typography
+                      variant="body2"
+                      sx={{ color: '#9CA3AF', fontWeight: 500 }}
+                    >
+                      Step {activeStep + 1} of {steps.length}
+                    </Typography>
+
+                    {activeStep === steps.length - 1 ? (
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        startIcon={<Save />}
+                        sx={{
+                          px: 4,
+                          py: 1.5,
+                          background: 'linear-gradient(135deg, #22C55E 0%, #4ADE80 100%)',
+                          boxShadow: '0 4px 14px rgba(34,197,94,0.4)',
+                          '&:hover': {
+                            background: 'linear-gradient(135deg, #16A34A 0%, #22C55E 100%)',
+                          },
+                        }}
+                      >
+                        Submit
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        onClick={() => handleNext(formik)}
+                        endIcon={<ArrowForward />}
+                        sx={{
+                          px: 4,
+                          py: 1.5,
+                          background: 'linear-gradient(135deg, #4F5BD5 0%, #7B84E4 100%)',
+                          boxShadow: '0 4px 14px rgba(79,91,213,0.4)',
+                          '&:hover': {
+                            background: 'linear-gradient(135deg, #3A44B0 0%, #5A66D5 100%)',
+                          },
+                        }}
+                      >
+                        Next
+                      </Button>
+                    )}
+                  </Box>
+                </Card>
+              </Form>
+            )}
+          </Formik>
+        </Container>
+      </Box>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert
+          severity={snackbar.severity}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </ThemeProvider>
+  );
+};
+
+export default EmployeeForm;
