@@ -1,44 +1,44 @@
 export interface BasicDetails {
-  employeeId: string;
-  title: string;
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  officialEmail: string;
-  employeePhoto: File | null;
-  designation: string;
-  jobRole: string;
-  reportingTo: string;
-  leaveAuthManager: number[];
+  employee_id: string;
+  employee_title: string;
+  first_name: string;
+  middle_name: string;
+  last_name: string;
+  email_id: string;
+  profile_picture: File | null;
+  designation_id: string;
+  job_role: string;
+  reporting_to: string;
+  leave_auth_manager: number[];
   leaveTemplate: number[];
-  preferredShift: string;
-  branch: string;
+  shift_type_id: string;
+  hired_branch_id: string;
   department: string;
 }
 
 export interface PersonalDetails {
-  contactNumber: string;
-  whatsappNumber: string;
+  contact_no: string;
+  whats_app_contact_no: string;
   sameAsContact: boolean;
-  presentAddress: string;
-  permanentAddress: string;
+  present_address: string;
+  permanent_address: string;
   sameAsPresentAddress: boolean;
   pincode: string;
-  country: string;
-  state: string;
-  city: string;
-  emergencyContactNumber: string;
-  personalEmail: string;
+  country_id: string;
+  state_id: string;
+  city_id: string;
+  emergency_contact: string;
+  personal_email_id: string;
   attachments: File | null;
-  dateOfBirth: string;
+  dob: string;
   gender: string;
-  bloodGroup: string;
-  maritalStatus: string;
-  aadharCardNumber: string;
-  aadharCardPhoto: File | null;
-  panNumber: string;
-  panCardPhoto: File | null;
-  physicallyHandicapped: string;
+  blood_group: string;
+  marital_status: string;
+  aadhar_no: string;
+  aadhar_photo: File | null;
+  pan_no: string;
+  pan_photo: File | null;
+  physically_handicapped: string;
 }
 
 export interface EducationalDetails {
@@ -52,12 +52,12 @@ export interface EducationalDetails {
 
 export interface ProfessionalDetails {
   experiences: {
-    previousCompany: string;
-    previousDesignation: string;
+    company: string;
+    designation: string;
     city: string;
     experience: string;
-    fromDate: string;
-    toDate: string;
+    from_date: string;
+    to_date: string;
   }[];
 }
 
@@ -65,18 +65,18 @@ export interface FamilyDetails {
   familyMembers: {
     relation: string;
     name: string;
-    dateOfBirth: string;
+    dob: string;
   }[];
 }
 
 export interface OtherDetails {
-  dateOfJoining: string;
-  dateOfTransfer: string;
-  employeeReference: string;
-  dateOfPromotion: string;
-  dateOfLeaving: string;
-  noticePeriod: string;
-  status: string;
+  doj: string;
+  date_of_transfer: string;
+  employee_reference: string;
+  date_of_promotion: string;
+  date_of_leaving: string;
+  notice_period: string;
+  separation_mode: string;
 }
 export interface EmployeeFormData {
   basicDetails: BasicDetails;
@@ -89,45 +89,45 @@ export interface EmployeeFormData {
 
 export const initialFormData: EmployeeFormData = {
   basicDetails: {
-    employeeId: '',
-    title: '',
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    officialEmail: '',
-    employeePhoto: null,
-    designation: '',
-    jobRole: '',
-    reportingTo: '',
-    leaveAuthManager: [],
+    employee_id: '',
+    employee_title: '',
+    first_name: '',
+    middle_name: '',
+    last_name: '',
+    email_id: '',
+    profile_picture: null,
+    designation_id: '',
+    job_role: '',
+    reporting_to: '',
+    leave_auth_manager: [],
     leaveTemplate: [],
-    preferredShift: '',
-    branch: '',
+    shift_type_id: '',
+    hired_branch_id: '',
     department: '',
   },
   personalDetails: {
-    contactNumber: '',
-    whatsappNumber: '',
+    contact_no: '',
+    whats_app_contact_no: '',
     sameAsContact: false,
-    presentAddress: '',
-    permanentAddress: '',
+    present_address: '',
+    permanent_address: '',
     sameAsPresentAddress: false,
     pincode: '',
-    country: '',
-    state: '',
-    city: '',
-    emergencyContactNumber: '',
-    personalEmail: '',
+    country_id: '',
+    state_id: '',
+    city_id: '',
+    emergency_contact: '',
+    personal_email_id: '',
     attachments: null,
-    dateOfBirth: '',
+    dob: '',
     gender: '',
-    bloodGroup: '',
-    maritalStatus: '',
-    aadharCardNumber: '',
-    aadharCardPhoto: null,
-    panNumber: '',
-    panCardPhoto: null,
-    physicallyHandicapped: 'no',
+    blood_group: '',
+    marital_status: '',
+    aadhar_no: '',
+    aadhar_photo: null,
+    pan_no: '',
+    pan_photo: null,
+    physically_handicapped: 'no',
   },
   educationalDetails: {
     educations: [
@@ -142,12 +142,12 @@ export const initialFormData: EmployeeFormData = {
   professionalDetails: {
     experiences: [
       {
-        previousCompany: '',
-        previousDesignation: '',
+        company: '',
+        designation: '',
         city: '',
         experience: '',
-        fromDate: '',
-        toDate: '',
+        from_date: '',
+        to_date: '',
       },
     ],
   },
@@ -156,17 +156,17 @@ export const initialFormData: EmployeeFormData = {
       {
         relation: '',
         name: '',
-        dateOfBirth: '',
+        dob: '',
       },
     ],
   },
  otherDetails: {
-    dateOfJoining: '',
-    dateOfTransfer: '',
-    employeeReference: '',
-    dateOfPromotion: '',
-    dateOfLeaving: '',
-    noticePeriod: '',
-    status: 'Active',
+    doj: '',
+    date_of_transfer: '',
+    employee_reference: '',
+    date_of_promotion: '',
+    date_of_leaving: '',
+    notice_period: '',
+    separation_mode: 'Active',
   },
 };

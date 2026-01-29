@@ -69,25 +69,25 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
     setFieldValue("personalDetails.sameAsContact", checked);
     if (checked) {
       setFieldValue(
-        "personalDetails.whatsappNumber",
-        personalDetails.contactNumber,
+        "personalDetails.whats_app_contact_no",
+        personalDetails.contact_no,
       );
     }
   };
 
   const filteredStates = useMemo(() => {
-    if (!personalDetails.country) return [];
+    if (!personalDetails.country_id) return [];
     return states.filter(
-      (state) => state.country_id === Number(personalDetails.country),
+      (state) => state.country_id === Number(personalDetails.country_id),
     );
-  }, [states, personalDetails.country]);
+  }, [states, personalDetails.country_id]);
 
   const filteredCities = useMemo(() => {
-    if (!personalDetails.state) return [];
+    if (!personalDetails.state_id) return [];
     return cities.filter(
-      (city) => city.state_id === Number(personalDetails.state),
+      (city) => city.state_id === Number(personalDetails.state_id),
     );
-  }, [cities, personalDetails.state]);
+  }, [cities, personalDetails.state_id]);
 
   const maritalStatusOptions = useMemo(
     () => employeeConventions.filter((item) => item.type === "marital_status"),
@@ -102,16 +102,16 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
   const handleCountryChange = (event: SelectChangeEvent) => {
     const countryId = event.target.value;
 
-    setFieldValue("personalDetails.country", countryId);
-    setFieldValue("personalDetails.state", "");
-    setFieldValue("personalDetails.city", "");
+    setFieldValue("personalDetails.country_id", countryId);
+    setFieldValue("personalDetails.state_id", "");
+    setFieldValue("personalDetails.city_id", "");
   };
 
   const handleStateChange = (event: SelectChangeEvent) => {
     const stateId = event.target.value;
 
-    setFieldValue("personalDetails.state", stateId);
-    setFieldValue("personalDetails.city", "");
+    setFieldValue("personalDetails.state_id", stateId);
+    setFieldValue("personalDetails.city_id", "");
   };
 
   const handleSameAsPresentAddress = (
@@ -121,8 +121,8 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
     setFieldValue("personalDetails.sameAsPresentAddress", checked);
     if (checked) {
       setFieldValue(
-        "personalDetails.permanentAddress",
-        personalDetails.presentAddress,
+        "personalDetails.permanent_address",
+        personalDetails.present_address,
       );
     }
   };
@@ -138,18 +138,18 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <TextField
               fullWidth
               label="Contact Number"
-              name="personalDetails.contactNumber"
-              value={personalDetails.contactNumber}
+              name="personalDetails.contact_no"
+              value={personalDetails.contact_no}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder="Enter contact number"
               error={
-                touched.personalDetails?.contactNumber &&
-                Boolean(errors.personalDetails?.contactNumber)
+                touched.personalDetails?.contact_no &&
+                Boolean(errors.personalDetails?.contact_no)
               }
               helperText={
-                touched.personalDetails?.contactNumber &&
-                (errors.personalDetails?.contactNumber as string)
+                touched.personalDetails?.contact_no &&
+                (errors.personalDetails?.contact_no as string)
               }
             />
           </Box>
@@ -165,8 +165,8 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <TextField
               fullWidth
               label="WhatsApp Number"
-              name="personalDetails.whatsappNumber"
-              value={personalDetails.whatsappNumber}
+              name="personalDetails.whats_app_contact_no"
+              value={personalDetails.whats_app_contact_no}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder="Enter WhatsApp number"
@@ -188,18 +188,18 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <TextField
               fullWidth
               label="Emergency Contact Number"
-              name="personalDetails.emergencyContactNumber"
-              value={personalDetails.emergencyContactNumber}
+              name="personalDetails.emergency_contact"
+              value={personalDetails.emergency_contact}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder="Enter emergency contact"
               error={
-                touched.personalDetails?.emergencyContactNumber &&
-                Boolean(errors.personalDetails?.emergencyContactNumber)
+                touched.personalDetails?.emergency_contact &&
+                Boolean(errors.personalDetails?.emergency_contact)
               }
               helperText={
-                touched.personalDetails?.emergencyContactNumber &&
-                (errors.personalDetails?.emergencyContactNumber as string)
+                touched.personalDetails?.emergency_contact &&
+                (errors.personalDetails?.emergency_contact as string)
               }
             />
           </Box>
@@ -207,19 +207,19 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <TextField
               fullWidth
               label="Personal Email"
-              name="personalDetails.personalEmail"
-              value={personalDetails.personalEmail}
+              name="personalDetails.personal_email_id"
+              value={personalDetails.personal_email_id}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder="personal@email.com"
               type="email"
               error={
-                touched.personalDetails?.personalEmail &&
-                Boolean(errors.personalDetails?.personalEmail)
+                touched.personalDetails?.personal_email_id &&
+                Boolean(errors.personalDetails?.personal_email_id)
               }
               helperText={
-                touched.personalDetails?.personalEmail &&
-                (errors.personalDetails?.personalEmail as string)
+                touched.personalDetails?.personal_email_id &&
+                (errors.personalDetails?.personal_email_id as string)
               }
             />
           </Box>
@@ -235,8 +235,8 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <TextField
               fullWidth
               label="Present Address"
-              name="personalDetails.presentAddress"
-              value={personalDetails.presentAddress}
+              name="personalDetails.present_address"
+              value={personalDetails.present_address}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder="Enter present address"
@@ -259,8 +259,8 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <TextField
               fullWidth
               label="Permanent Address"
-              name="personalDetails.permanentAddress"
-              value={personalDetails.permanentAddress}
+              name="personalDetails.permanent_address"
+              value={personalDetails.permanent_address}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder="Enter permanent address"
@@ -286,8 +286,8 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <FormControl fullWidth>
               <InputLabel>Country</InputLabel>
               <Select
-                name="personalDetails.country"
-                value={personalDetails.country}
+                name="personalDetails.country_id"
+                value={personalDetails.country_id}
                 onChange={handleCountryChange}
                 onBlur={handleBlur}
                 label="Country"
@@ -304,8 +304,8 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <FormControl fullWidth>
               <InputLabel>State</InputLabel>
               <Select
-                name="personalDetails.state"
-                value={personalDetails.state}
+                name="personalDetails.state_id"
+                value={personalDetails.state_id}
                 onChange={handleStateChange}
                 onBlur={handleBlur}
                 label="State"
@@ -322,8 +322,8 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <FormControl fullWidth>
               <InputLabel>City</InputLabel>
               <Select
-                name="personalDetails.city"
-                value={personalDetails.city}
+                name="personalDetails.city_id"
+                value={personalDetails.city_id}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 label="City"
@@ -348,19 +348,19 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <TextField
               fullWidth
               label="Date of Birth"
-              name="personalDetails.dateOfBirth"
-              value={personalDetails.dateOfBirth}
+              name="personalDetails.dob"
+              value={personalDetails.dob}
               onChange={handleChange}
               onBlur={handleBlur}
               type="date"
               InputLabelProps={{ shrink: true }}
               error={
-                touched.personalDetails?.dateOfBirth &&
-                Boolean(errors.personalDetails?.dateOfBirth)
+                touched.personalDetails?.dob &&
+                Boolean(errors.personalDetails?.dob)
               }
               helperText={
-                touched.personalDetails?.dateOfBirth &&
-                (errors.personalDetails?.dateOfBirth as string)
+                touched.personalDetails?.dob &&
+                (errors.personalDetails?.dob as string)
               }
             />
           </Box>
@@ -400,8 +400,8 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <FormControl fullWidth>
               <InputLabel>Marital Status</InputLabel>
               <Select
-                name="personalDetails.maritalStatus"
-                value={personalDetails.maritalStatus}
+                name="personalDetails.marital_status"
+                value={personalDetails.marital_status}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 label="Marital Status"
@@ -418,8 +418,8 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <FormControl fullWidth>
               <InputLabel>Blood Group</InputLabel>
               <Select
-                name="personalDetails.bloodGroup"
-                value={personalDetails.bloodGroup}
+                name="personalDetails.blood_group"
+                value={personalDetails.blood_group}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 label="Blood Group"
@@ -442,8 +442,8 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
               </FormLabel>
               <RadioGroup
                 row
-                name="personalDetails.physicallyHandicapped"
-                value={personalDetails.physicallyHandicapped}
+                name="personalDetails.physically_handicapped"
+                value={personalDetails.physically_handicapped}
                 onChange={handleChange}
               >
                 <FormControlLabel
@@ -471,8 +471,8 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <TextField
               fullWidth
               label="Aadhar Card Number"
-              name="personalDetails.aadharCardNumber"
-              value={personalDetails.aadharCardNumber}
+              name="personalDetails.aadhar_no"
+              value={personalDetails.aadhar_no}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder="Enter Aadhar number"
@@ -514,8 +514,8 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
             <TextField
               fullWidth
               label="PAN Number"
-              name="personalDetails.panNumber"
-              value={personalDetails.panNumber}
+              name="personalDetails.pan_no"
+              value={personalDetails.pan_no}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder="Enter PAN number"
@@ -545,7 +545,7 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
                 onChange={(e) => {
                   if (e.target.files?.[0]) {
                     setFieldValue(
-                      "personalDetails.panCardPhoto",
+                      "personalDetails.pan_card_photo",
                       e.target.files[0],
                     );
                   }

@@ -103,8 +103,8 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
                 <TextField
                   fullWidth
                   label="Employee ID"
-                  name="basicDetails.employeeId"
-                  value={employeeIds}
+                  name="basicDetails.employee_id"
+                  defaultValue={employeeIds}
                   disabled
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -116,8 +116,8 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
                 <TextField
                   fullWidth
                   label="Official Email"
-                  name="basicDetails.officialEmail"
-                  value={basicDetails.officialEmail}
+                  name="basicDetails.email_id"
+                  value={basicDetails.email_id}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   placeholder="employee@company.com"
@@ -135,8 +135,8 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
                 <FormControl fullWidth>
                   <InputLabel>Title</InputLabel>
                   <Select
-                    name="basicDetails.title"
-                    value={basicDetails.title}
+                    name="basicDetails.employee_title"
+                    value={basicDetails.employee_title}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     label="Title"
@@ -152,8 +152,8 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
                 <TextField
                   fullWidth
                   label="First Name"
-                  name="basicDetails.firstName"
-                  value={basicDetails.firstName}
+                  name="basicDetails.first_name"
+                  value={basicDetails.first_name}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   placeholder="First Name"
@@ -163,8 +163,8 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
                 <TextField
                   fullWidth
                   label="Middle Name"
-                  name="basicDetails.middleName"
-                  value={basicDetails.middleName}
+                  name="basicDetails.middle_name"
+                  value={basicDetails.middle_name}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   placeholder="Middle Name"
@@ -174,8 +174,8 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
                 <TextField
                   fullWidth
                   label="Last Name"
-                  name="basicDetails.lastName"
-                  value={basicDetails.lastName}
+                  name="basicDetails.last_name"
+                  value={basicDetails.last_name}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   placeholder="Last Name"
@@ -200,8 +200,8 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
             >
               <Avatar
                 src={
-                  basicDetails.employeePhoto
-                    ? URL.createObjectURL(basicDetails.employeePhoto)
+                  basicDetails.profile_picture
+                    ? URL.createObjectURL(basicDetails.profile_picture)
                     : undefined
                 }
                 sx={{
@@ -213,7 +213,7 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
                   boxShadow: "0 4px 14px rgba(79,91,213,0.3)",
                 }}
               >
-                {basicDetails.firstName?.charAt(0) || "E"}
+                {basicDetails.first_name?.charAt(0) || "E"}
               </Avatar>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                 Upload Employee Photo
@@ -254,8 +254,8 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
             <FormControl fullWidth>
               <InputLabel>Select Designation</InputLabel>
               <Select
-                name="basicDetails.designation"
-                value={basicDetails.designation}
+                name="basicDetails.designation_id"
+                value={basicDetails.designation_id}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 label="Select Designation"
@@ -272,8 +272,8 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
             <FormControl fullWidth>
               <InputLabel>Select Job Role</InputLabel>
               <Select
-                name="basicDetails.jobRole"
-                value={basicDetails.jobRole}
+                name="basicDetails.job_role"
+                value={basicDetails.job_role}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 label="Select Job Role"
@@ -298,8 +298,8 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
             <FormControl fullWidth>
               <InputLabel>Reporting To</InputLabel>
               <Select
-                name="basicDetails.reportingTo"
-                value={basicDetails.reportingTo}
+                name="basicDetails.reporting_to"
+                value={basicDetails.reporting_to}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 label="Reporting To"
@@ -324,11 +324,11 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
         ?.join(' ')
     }
     value={employees?.filter((emp) =>
-      basicDetails?.leaveAuthManager.includes(emp?.id)
+      basicDetails?.leave_auth_manager.includes(emp?.id)
     )}
     onChange={(_, selected) => {
       setFieldValue(
-        'basicDetails.leaveAuthManager',
+        'basicDetails.leave_auth_manager',
         selected.map((emp) => emp.id)
       );
     }}
@@ -384,8 +384,8 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
             <FormControl fullWidth>
               <InputLabel>Preferred Shift</InputLabel>
               <Select
-                name="basicDetails.preferredShift"
-                value={basicDetails.preferredShift}
+                name="basicDetails.shift_type_id"
+                value={basicDetails.shift_type_id}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 label="Preferred Shift"
@@ -403,8 +403,8 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
             <FormControl fullWidth>
               <InputLabel>Branch</InputLabel>
               <Select
-                name="basicDetails.branch"
-                value={basicDetails.branch}
+                name="basicDetails.hired_branch_id"
+                value={basicDetails.hired_branch_id}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 label="Branch"

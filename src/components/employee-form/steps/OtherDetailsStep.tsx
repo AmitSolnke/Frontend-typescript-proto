@@ -40,8 +40,8 @@ const OtherDetailsStep: React.FC<OtherDetailsStepProps> = ({ formik }) => {
             <TextField
               fullWidth
               label="Date Of Joining"
-              name="otherDetails.dateOfJoining"
-              value={otherDetails.dateOfJoining}
+              name="otherDetails.doj"
+              value={otherDetails.doj}
               onChange={handleChange}
               onBlur={handleBlur}
               type="date"
@@ -53,8 +53,8 @@ const OtherDetailsStep: React.FC<OtherDetailsStepProps> = ({ formik }) => {
             <TextField
               fullWidth
               label="Date Of Transfer"
-              name="otherDetails.dateOfTransfer"
-              value={otherDetails.dateOfTransfer}
+              name="otherDetails.date_of_transfer"
+              value={otherDetails.date_of_transfer}
               onChange={handleChange}
               onBlur={handleBlur}
               type="date"
@@ -65,8 +65,8 @@ const OtherDetailsStep: React.FC<OtherDetailsStepProps> = ({ formik }) => {
             <TextField
               fullWidth
               label="Employee Reference"
-              name="otherDetails.employeeReference"
-              value={otherDetails.employeeReference}
+              name="otherDetails.employee_reference"
+              value={otherDetails.employee_reference}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder="Enter reference"
@@ -76,8 +76,8 @@ const OtherDetailsStep: React.FC<OtherDetailsStepProps> = ({ formik }) => {
             <TextField
               fullWidth
               label="Date Of Promotion"
-              name="otherDetails.dateOfPromotion"
-              value={otherDetails.dateOfPromotion}
+              name="otherDetails.date_of_promotion"
+              value={otherDetails.date_of_promotion}
               onChange={handleChange}
               onBlur={handleBlur}
               type="date"
@@ -88,8 +88,8 @@ const OtherDetailsStep: React.FC<OtherDetailsStepProps> = ({ formik }) => {
             <TextField
               fullWidth
               label="Date Of Leaving"
-              name="otherDetails.dateOfLeaving"
-              value={otherDetails.dateOfLeaving}
+              name="otherDetails.date_of_leaving"
+              value={otherDetails.date_of_leaving}
               onChange={handleChange}
               onBlur={handleBlur}
               type="date"
@@ -100,8 +100,8 @@ const OtherDetailsStep: React.FC<OtherDetailsStepProps> = ({ formik }) => {
             <TextField
               fullWidth
               label="Notice Period (Days)"
-              name="otherDetails.noticePeriod"
-              value={otherDetails.noticePeriod}
+              name="otherDetails.notice_period"
+              value={otherDetails.notice_period}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder="e.g., 30"
@@ -117,8 +117,8 @@ const OtherDetailsStep: React.FC<OtherDetailsStepProps> = ({ formik }) => {
             <FormControl fullWidth required>
               <InputLabel>Status</InputLabel>
               <Select
-                name="otherDetails.status"
-                value={otherDetails.status}
+                name="otherDetails.separation_mode"
+                value={otherDetails.separation_mode}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 label="Status"

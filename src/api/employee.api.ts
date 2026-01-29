@@ -148,6 +148,9 @@ export interface EmployeeConvention {
 }
 
 
+
+
+
 export const fetchDesignationMaster = async (): Promise<Designation[]> => {
   const res: DesignationApiResponse =
     await axiosTicketing.get('designationMaster/getData?export=1');
@@ -214,3 +217,31 @@ export const fetchEmployeeConvention = async () : Promise<EmployeeConvention[]> 
 const res: EmployeeConventionApiResponse = await axiosTicketing.get('employeeMaster/getEmployeeConvention');
   return res?.data
 }
+
+export const fetchAllEmployeeData = async () => {
+const res = await axiosTicketing.get('employeeMaster/getData?export=1');
+  return res?.data?.data
+}
+
+export const postEmployeeData = async (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload: any
+) => {
+  const response = await axiosTicketing.post(
+    'employeeMaster/postData',
+    payload
+  );
+  return response.data;
+};
+
+export const updateEmployeeData = async (
+  id: number,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload: any
+) => {
+  const response = await axiosTicketing.put(
+    `employeeMaster/${id}`,
+    payload
+  );
+  return response.data;
+};

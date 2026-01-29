@@ -146,8 +146,8 @@ const FamilyDetailsStep: React.FC<FamilyDetailsStepProps> = ({ formik }) => {
                         <TextField
                           fullWidth
                           label="Date Of Birth"
-                          name={`familyDetails.familyMembers.${index}.dateOfBirth`}
-                          value={member.dateOfBirth}
+                          name={`familyDetails.familyMembers.${index}.dob`}
+                          value={member.dob}
                           onChange={handleChange}
                           onBlur={handleBlur}
                           type="date"

@@ -9,6 +9,7 @@ import {
   Fade,
   Alert,
   Snackbar,
+  IconButton,
 } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -32,6 +33,9 @@ import EducationalDetailsStep from './steps/EducationDetailsStep';
 import ProfessionalDetailsStep from './steps/ProfessionalDetailsStep';
 import FamilyDetailsStep from './steps/FamilyDetailsStep';
 import OtherDetailsStep from './steps/OtherDetailsStep';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { postEmployeeData } from '../../api/employee.api';
+import { useNavigate } from 'react-router-dom';
 
 const steps = [
   'Basic Details',
@@ -93,6 +97,8 @@ const otherDetailsSchema = Yup.object().shape({
   }),
 });
 
+
+
 const validationSchemas = [
   null, // No validation for Basic Details
   null,
@@ -105,7 +111,15 @@ const validationSchemas = [
 const EmployeeForm: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
+const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
+const { mutate: createEmployee, isPending } = useMutation({
+  mutationFn: postEmployeeData,
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['employeeData'] });
+  },
+});
   const handleNext = async (formik: FormikProps<EmployeeFormData>) => {
     const currentSchema = validationSchemas[activeStep];
     
@@ -151,11 +165,62 @@ const EmployeeForm: React.FC = () => {
 
   const handleSubmit = (values: EmployeeFormData) => {
     console.log('Form submitted:', values);
-    setSnackbar({
-      open: true,
-      message: 'Employee created successfully!',
-      severity: 'success',
-    });
+    const payLoad = {
+      employee_id: values.basicDetails.employee_id,
+      employee_title: values.basicDetails.employee_title,
+      first_name: values.basicDetails.first_name,
+      middle_name: values.basicDetails.middle_name,
+      last_name: values.basicDetails.last_name,
+      email_id: values.basicDetails.email_id,
+      profile_picture: values.basicDetails.profile_picture,
+      designation_id: values.basicDetails.designation_id,
+      job_role: values.basicDetails.job_role,
+      reporting_to: values.basicDetails.reporting_to,
+      leave_auth_manager: values.basicDetails.leave_auth_manager,
+      leave_template: values.basicDetails.leaveTemplate,
+      shift_type_id: values.basicDetails.shift_type_id,
+      hired_branch_id: values.basicDetails.hired_branch_id,
+      department: values.basicDetails.department,
+      is_active: 1,
+      contact_no: values.personalDetails.contact_no,
+      whats_app_contact_no: values.personalDetails.whats_app_contact_no,
+      sameAsContact: values.personalDetails.sameAsContact,
+      present_address: values.personalDetails.present_address,
+      permanent_address: values.personalDetails.permanent_address,
+      sameAsPresentAddress: values.personalDetails.sameAsPresentAddress,
+      pincode: values.personalDetails.pincode,
+      country_id: values.personalDetails.country_id,
+      state_id: values.personalDetails.state_id,
+      city_id: values.personalDetails.city_id,
+      emergency_contact: values.personalDetails.emergency_contact,
+      personal_email_id: values.personalDetails.personal_email_id,
+      dob: values.personalDetails.dob,
+      gender: values.personalDetails.gender,
+      blood_group: values.personalDetails.blood_group,
+      marital_status: values.personalDetails.marital_status,
+      aadhar_no: values.personalDetails.aadhar_no,
+      aadhar_photo: values.personalDetails.aadhar_photo,
+      pan_no: values.personalDetails.pan_no,
+      physically_handicapped: values.personalDetails.physically_handicapped,
+       educational_details: values.educationalDetails.educations,
+       professional_details: values.professionalDetails.experiences,
+       family_details: values.familyDetails.familyMembers,
+       doj: values.otherDetails.doj,
+       date_of_transfer: values.otherDetails.date_of_transfer,
+       employee_reference: values.otherDetails.employee_reference,
+       date_of_promotion: values.otherDetails.date_of_promotion,
+       date_of_leaving: values.otherDetails.date_of_leaving,
+       notice_period: values.otherDetails.notice_period,
+       separation_mode: values.otherDetails.separation_mode,
+
+    }
+    console.log('Payload for submission:', payLoad);
+    createEmployee(payLoad);
+    // setSnackbar({
+    //   open: true,
+    //   message: 'Employee created successfully!',
+    //   severity: 'success',
+    // });
   };
 
   const renderStepContent = (step: number, formik: FormikProps<EmployeeFormData>) => {
@@ -189,46 +254,63 @@ const EmployeeForm: React.FC = () => {
       >
         <Container maxWidth="lg">
           {/* Header */}
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-              mb: 4,
-            }}
-          >
-            <Box
-              sx={{
-                width: 56,
-                height: 56,
-                borderRadius: 3,
-                background: 'linear-gradient(135deg, #4F5BD5 0%, #7B84E4 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 20px rgba(79,91,213,0.4)',
-              }}
-            >
-              <PersonAdd sx={{ color: '#fff', fontSize: 28 }} />
-            </Box>
-            <Box>
-              <Typography
-                variant="h4"
-                sx={{
-                  fontWeight: 700,
-                  color: '#1A1F36',
-                  background: 'linear-gradient(135deg, #4F5BD5 0%, #7B84E4 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                Create Employee
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Fill in the details to add a new employee
-              </Typography>
-            </Box>
-          </Box>
+        <Box
+  sx={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    mb: 4,
+  }}
+>
+  {/* Left: Back + Title */}
+  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+    {/* Back Button */}
+    <IconButton
+      onClick={() => navigate('/employee')}
+      sx={{
+        border: '1px solid #E0E3EB',
+        borderRadius: 2,
+      }}
+    >
+      <ArrowBack />
+    </IconButton>
+
+    {/* Icon */}
+    <Box
+      sx={{
+        width: 56,
+        height: 56,
+        borderRadius: 3,
+        background: 'linear-gradient(135deg, #4F5BD5 0%, #7B84E4 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 4px 20px rgba(79,91,213,0.4)',
+      }}
+    >
+      <PersonAdd sx={{ color: '#fff', fontSize: 28 }} />
+    </Box>
+
+    {/* Title */}
+    <Box>
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: 700,
+          background: 'linear-gradient(135deg, #4F5BD5 0%, #7B84E4 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        }}
+      >
+        Create Employee
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        Fill in the details to add a new employee
+      </Typography>
+    </Box>
+  </Box>
+</Box>
+
 
           {/* Stepper Card */}
           <Card

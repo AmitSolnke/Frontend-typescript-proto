@@ -100,9 +100,9 @@ const ProfessionalDetailsStep: React.FC<ProfessionalDetailsStepProps> = ({ formi
                       <Box sx={{ flex: '1 1 22%', minWidth: 180 }}>
                         <TextField
                           fullWidth
-                          label="Previous Company"
-                          name={`professionalDetails.experiences.${index}.previousCompany`}
-                          value={experience.previousCompany}
+                          label="Company"
+                          name={`professionalDetails.experiences.${index}.company`}
+                          value={experience.company}
                           onChange={handleChange}
                           onBlur={handleBlur}
                           placeholder="Enter company name"
@@ -111,9 +111,9 @@ const ProfessionalDetailsStep: React.FC<ProfessionalDetailsStepProps> = ({ formi
                       <Box sx={{ flex: '1 1 22%', minWidth: 180 }}>
                         <TextField
                           fullWidth
-                          label="Previous Designation"
-                          name={`professionalDetails.experiences.${index}.previousDesignation`}
-                          value={experience.previousDesignation}
+                          label="Designation"
+                          name={`professionalDetails.experiences.${index}.designation`}
+                          value={experience.designation}
                           onChange={handleChange}
                           onBlur={handleBlur}
                           placeholder="Enter designation"
@@ -146,8 +146,8 @@ const ProfessionalDetailsStep: React.FC<ProfessionalDetailsStepProps> = ({ formi
                         <TextField
                           fullWidth
                           label="From Date"
-                          name={`professionalDetails.experiences.${index}.fromDate`}
-                          value={experience.fromDate}
+                          name={`professionalDetails.experiences.${index}.from_date`}
+                          value={experience.from_date}
                           onChange={handleChange}
                           onBlur={handleBlur}
                           type="date"
@@ -158,8 +158,8 @@ const ProfessionalDetailsStep: React.FC<ProfessionalDetailsStepProps> = ({ formi
                         <TextField
                           fullWidth
                           label="To Date"
-                          name={`professionalDetails.experiences.${index}.toDate`}
-                          value={experience.toDate}
+                          name={`professionalDetails.experiences.${index}.to_date`}
+                          value={experience.to_date}
                           onChange={handleChange}
                           onBlur={handleBlur}
                           type="date"
