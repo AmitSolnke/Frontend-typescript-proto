@@ -32,7 +32,6 @@ import {
   fetchShifts,
   fetchBranches,
   fetchDepartments,
-  fetchEmployeeId,
 } from "../../../api/employee.api";
 
 interface BasicDetailsStepProps {
@@ -43,45 +42,54 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
   const { values, handleChange, handleBlur, setFieldValue } = formik;
   const basicDetails = values.basicDetails;
 
+   const { data: employees = [] } = useQuery({
+  queryKey: ['employees'],
+  queryFn: fetchEmployee,
+    retry: false,
+});
+
   const { data: designationList = [] } = useQuery({
     queryKey: ["designationMaster"],
     queryFn: fetchDesignationMaster,
+     retry: false,
   });
 
   const { data: jobRoles = [] } = useQuery({
     queryKey: ["jobRoles"],
     queryFn: fetchJobRoles,
+     retry: false,
   });
 
-  const { data: employees = [] } = useQuery({
-  queryKey: ['employees'],
-  queryFn: fetchEmployee,
-});
 
   const { data: leaveTemplates = [] } = useQuery({
     queryKey: ['leaveTemplates'],
     queryFn: fetchLeaveTemplates,
+     retry: false,
   });
 
   const { data: shifts = [] } = useQuery({
     queryKey: ['shifts'],
     queryFn: fetchShifts,
+     retry: false,
   });
 
   const { data: branches = [] } = useQuery({
     queryKey: ['branches'],
     queryFn: fetchBranches,
+     retry: false,
   });
 
   const { data: departments = [] } = useQuery({
     queryKey: ['departments'],
     queryFn: fetchDepartments,
+     retry: false,
   });
 
-  const { data: employeeIds = '' } = useQuery({
-    queryKey: ['employeeIds'],
-    queryFn: fetchEmployeeId,
-      });
+  // const { data: employeeIds = '' } = useQuery({
+  //   queryKey: ['employeeIds'],
+  //   queryFn: fetchEmployeeId,
+  //    retry: false,
+  //     });
 
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -104,7 +112,7 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
                   fullWidth
                   label="Employee ID"
                   name="basicDetails.employee_id"
-                  defaultValue={employeeIds}
+                  value={basicDetails?.employee_id}
                   disabled
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -199,11 +207,12 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
               }}
             >
               <Avatar
-                src={
-                  basicDetails.profile_picture
-                    ? URL.createObjectURL(basicDetails.profile_picture)
-                    : undefined
-                }
+              src=""
+                // src={
+                //   basicDetails?.profile_picture
+                //     ? URL.createObjectURL(basicDetails?.profile_picture)
+                //     : undefined
+                // }
                 sx={{
                   width: 100,
                   height: 100,
@@ -213,7 +222,7 @@ const BasicDetailsStep: React.FC<BasicDetailsStepProps> = ({ formik }) => {
                   boxShadow: "0 4px 14px rgba(79,91,213,0.3)",
                 }}
               >
-                {basicDetails.first_name?.charAt(0) || "E"}
+                {basicDetails?.first_name?.charAt(0) || "E"}
               </Avatar>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                 Upload Employee Photo

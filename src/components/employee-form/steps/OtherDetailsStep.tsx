@@ -25,6 +25,7 @@ const OtherDetailsStep: React.FC<OtherDetailsStepProps> = ({ formik }) => {
      const { data: employeeConventions = [] } = useQuery({
         queryKey: ["employeeConventions"],
         queryFn: fetchEmployeeConvention,
+         retry: false,
       });
   
         const statusOptions = useMemo(

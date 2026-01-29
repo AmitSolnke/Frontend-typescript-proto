@@ -25,6 +25,7 @@ const EmployeeGrid: React.FC = () => {
   const { data = [], isLoading } = useQuery({
     queryKey: ['employeeData'],
     queryFn: fetchAllEmployeeData,
+     retry: false,
   });
 
   console.log('Employee Data:', data);

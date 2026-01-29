@@ -31,6 +31,7 @@ const FamilyDetailsStep: React.FC<FamilyDetailsStepProps> = ({ formik }) => {
    const { data: employeeConventions = [] } = useQuery({
       queryKey: ["employeeConventions"],
       queryFn: fetchEmployeeConvention,
+       retry: false,
     });
 
       const relationOptions = useMemo(
@@ -135,8 +136,8 @@ const FamilyDetailsStep: React.FC<FamilyDetailsStepProps> = ({ formik }) => {
                         <TextField
                           fullWidth
                           label="Name"
-                          name={`familyDetails.familyMembers.${index}.name`}
-                          value={member.name}
+                          name={`familyDetails.familyMembers.${index}.relative_name`}
+                          value={member.relative_name}
                           onChange={handleChange}
                           onBlur={handleBlur}
                           placeholder="Enter name"

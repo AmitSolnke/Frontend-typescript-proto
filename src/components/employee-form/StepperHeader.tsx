@@ -18,7 +18,7 @@ import {
   Check,
 } from '@mui/icons-material';
 
-const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
+const ColorlibConnector = styled(StepConnector)(() => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
     top: 22,
   },
@@ -42,7 +42,7 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
 
 const ColorlibStepIconRoot = styled('div')<{
   ownerState: { completed?: boolean; active?: boolean };
-}>(({ theme, ownerState }) => ({
+}>(({ownerState }) => ({
   backgroundColor: '#E5E7EB',
   zIndex: 1,
   color: '#9CA3AF',

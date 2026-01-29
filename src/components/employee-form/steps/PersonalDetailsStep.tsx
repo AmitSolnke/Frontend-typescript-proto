@@ -379,12 +379,12 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
                 onChange={handleChange}
               >
                 <FormControlLabel
-                  value="female"
+                  value="FEMALE"
                   control={<Radio sx={{ color: "#4F5BD5" }} />}
                   label="Female"
                 />
                 <FormControlLabel
-                  value="male"
+                  value="MALE"
                   control={<Radio sx={{ color: "#4F5BD5" }} />}
                   label="Male"
                 />
@@ -447,12 +447,12 @@ const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
                 onChange={handleChange}
               >
                 <FormControlLabel
-                  value="yes"
+                  value="YES"
                   control={<Radio sx={{ color: "#4F5BD5" }} />}
                   label="Yes"
                 />
                 <FormControlLabel
-                  value="no"
+                  value="NO"
                   control={<Radio sx={{ color: "#4F5BD5" }} />}
                   label="No"
                 />

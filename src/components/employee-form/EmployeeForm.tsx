@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Box,
   Card,
@@ -10,6 +10,7 @@ import {
   Alert,
   Snackbar,
   IconButton,
+  CircularProgress,
 } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -34,8 +35,12 @@ import ProfessionalDetailsStep from './steps/ProfessionalDetailsStep';
 import FamilyDetailsStep from './steps/FamilyDetailsStep';
 import OtherDetailsStep from './steps/OtherDetailsStep';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postEmployeeData } from '../../api/employee.api';
+import { postEmployeeData, updateEmployeeData,fetchEmployeeId } from '../../api/employee.api';
 import { useNavigate } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getEmployeeDataById } from '../../api/employee.api';
+import { mapEmployeeToFormValues } from './mapEmployeeToFormValues';
 
 const steps = [
   'Basic Details',
@@ -114,12 +119,76 @@ const EmployeeForm: React.FC = () => {
 const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-const { mutate: createEmployee, isPending } = useMutation({
+  const formikRef = useRef<FormikProps<EmployeeFormData>>(null);
+
+  const { id } = useParams();
+const location = useLocation();
+const mode = location.state?.mode ?? 'create';
+
+const { data: employeeData, isLoading } = useQuery({
+  queryKey: ['employeeById', id],
+  queryFn: () => getEmployeeDataById(id!),
+  enabled: !!id, // 🔥 important (runs only for edit/view)
+});
+
+ const { data: employeeIds = '' } = useQuery({
+    queryKey: ['employeeIds'],
+    queryFn: fetchEmployeeId,
+     retry: false,
+      });
+console.log(employeeData,"employeeData")
+console.log(mode, "mode")
+
+const { mutate: createEmployee } = useMutation({
   mutationFn: postEmployeeData,
-  onSuccess: () => {
+  onSuccess: (res) => {
+    setSnackbar({
+      open: true,
+      message: res?.message || 'Employee created successfully',
+      severity: 'success',
+    });
+
     queryClient.invalidateQueries({ queryKey: ['employeeData'] });
+
+    // redirect after short delay (better UX)
+    setTimeout(() => {
+      navigate('/employee');
+    }, 1000);
+  },
+  onError: () => {
+    setSnackbar({
+      open: true,
+      message: 'Failed to create employee',
+      severity: 'error',
+    });
   },
 });
+
+const { mutate: updateEmployee } = useMutation({
+  mutationFn: updateEmployeeData,
+  onSuccess: (res) => {
+    console.log(res,"res>>>>>")
+    setSnackbar({
+      open: true,
+      message: res?.message || 'Employee updated successfully',
+      severity: 'success',
+    });
+
+    queryClient.invalidateQueries({ queryKey: ['employeeData'] });
+
+    setTimeout(() => {
+      navigate('/employee');
+    }, 1000);
+  },
+  onError: () => {
+    setSnackbar({
+      open: true,
+      message: 'Failed to update employee',
+      severity: 'error',
+    });
+  },
+});
+
   const handleNext = async (formik: FormikProps<EmployeeFormData>) => {
     const currentSchema = validationSchemas[activeStep];
     
@@ -174,7 +243,7 @@ const { mutate: createEmployee, isPending } = useMutation({
       email_id: values.basicDetails.email_id,
       profile_picture: values.basicDetails.profile_picture,
       designation_id: values.basicDetails.designation_id,
-      job_role: values.basicDetails.job_role,
+      job_role: String(values.basicDetails.job_role),
       reporting_to: values.basicDetails.reporting_to,
       leave_auth_manager: values.basicDetails.leave_auth_manager,
       leave_template: values.basicDetails.leaveTemplate,
@@ -189,9 +258,9 @@ const { mutate: createEmployee, isPending } = useMutation({
       permanent_address: values.personalDetails.permanent_address,
       sameAsPresentAddress: values.personalDetails.sameAsPresentAddress,
       pincode: values.personalDetails.pincode,
-      country_id: values.personalDetails.country_id,
-      state_id: values.personalDetails.state_id,
-      city_id: values.personalDetails.city_id,
+      country_id: String(values.personalDetails.country_id),
+      state_id: String(values.personalDetails.state_id),
+      city_id: String(values.personalDetails.city_id),
       emergency_contact: values.personalDetails.emergency_contact,
       personal_email_id: values.personalDetails.personal_email_id,
       dob: values.personalDetails.dob,
@@ -215,13 +284,45 @@ const { mutate: createEmployee, isPending } = useMutation({
 
     }
     console.log('Payload for submission:', payLoad);
-    createEmployee(payLoad);
+    if(mode === "edit"){
+       updateEmployee({id, payload: payLoad})
+    }else{
+       createEmployee(payLoad);
+    }
+   
     // setSnackbar({
     //   open: true,
     //   message: 'Employee created successfully!',
     //   severity: 'success',
     // });
   };
+
+  useEffect(() => {
+  if (mode === 'edit' && employeeData) {
+    formikRef.current?.setValues(
+      mapEmployeeToFormValues(employeeData)
+    );
+  }
+}, [employeeData, mode]);
+
+
+useEffect(() => {
+  if (mode === 'create' && employeeIds) {
+    formikRef.current?.setFieldValue(
+      'basicDetails.employee_id',
+      employeeIds
+    );
+  }
+}, [employeeIds, mode]);
+
+
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   const renderStepContent = (step: number, formik: FormikProps<EmployeeFormData>) => {
     switch (step) {
@@ -327,7 +428,9 @@ const { mutate: createEmployee, isPending } = useMutation({
 
           {/* Form Content Card */}
           <Formik
+           innerRef={formikRef}
             initialValues={initialFormData}
+             enableReinitialize={true}
             onSubmit={handleSubmit}
           >
             {(formik) => (

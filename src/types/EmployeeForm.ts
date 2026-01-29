@@ -64,7 +64,7 @@ export interface ProfessionalDetails {
 export interface FamilyDetails {
   familyMembers: {
     relation: string;
-    name: string;
+    relative_name: string;
     dob: string;
   }[];
 }
@@ -89,7 +89,7 @@ export interface EmployeeFormData {
 
 export const initialFormData: EmployeeFormData = {
   basicDetails: {
-    employee_id: '',
+    employee_id: '8980',
     employee_title: '',
     first_name: '',
     middle_name: '',
@@ -127,7 +127,7 @@ export const initialFormData: EmployeeFormData = {
     aadhar_photo: null,
     pan_no: '',
     pan_photo: null,
-    physically_handicapped: 'no',
+    physically_handicapped: 'NO',
   },
   educationalDetails: {
     educations: [
@@ -155,7 +155,7 @@ export const initialFormData: EmployeeFormData = {
     familyMembers: [
       {
         relation: '',
-        name: '',
+        relative_name: '',
         dob: '',
       },
     ],

@@ -1,6 +1,7 @@
 import axiosTicketing from "./axiosTicketing";
 import axiosNode from "./axiosNode";
 import axiosTsNewBackend from "./axiosTsNewBackend";
+import axiosPrototyping from "./axiosProtoType";
 import type { AxiosResponse } from 'axios';
 
 interface Designation {
@@ -219,29 +220,24 @@ const res: EmployeeConventionApiResponse = await axiosTicketing.get('employeeMas
 }
 
 export const fetchAllEmployeeData = async () => {
-const res = await axiosTicketing.get('employeeMaster/getData?export=1');
+const res = await axiosPrototyping.get('employee/getData?export=1');
   return res?.data?.data
 }
 
-export const postEmployeeData = async (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  payload: any
-) => {
-  const response = await axiosTicketing.post(
-    'employeeMaster/postData',
-    payload
-  );
-  return response.data;
+export const postEmployeeData  = async (payload) => {
+  const response = await axiosPrototyping.post('employee/postData', payload);
+  return response;
 };
 
-export const updateEmployeeData = async (
-  id: number,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  payload: any
-) => {
-  const response = await axiosTicketing.put(
-    `employeeMaster/${id}`,
-    payload
-  );
-  return response.data;
+export const updateEmployeeData = async ({ id, payload }: { id: number; payload }) => {
+  const response = await axiosPrototyping.post(`employee/postData/${id}`, payload);
+  return response;
 };
+
+export const getEmployeeDataById = async (id: number | string) => {
+  const res = await axiosPrototyping.get(
+    `employee/getData/${id}`
+  );
+  return res?.data?.data;
+};
+
