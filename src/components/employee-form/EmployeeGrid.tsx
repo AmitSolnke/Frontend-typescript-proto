@@ -100,9 +100,16 @@ const EmployeeGrid: React.FC = () => {
               <TableCell>{row.employee_id ?? '--'}</TableCell>
 
               {/* Name */}
-              <TableCell sx={{ color: '#f19828', fontWeight: 500 }}>
-                {row.name ?? '--'}
-              </TableCell>
+            <TableCell sx={{ color: '#f19828', fontWeight: 500 }}>
+  {(() => {
+    const fullName = `${row?.first_name || ''} ${row?.middle_name || ''} ${row?.last_name || ''}`.trim();
+
+    return fullName.length > 30
+      ? `${fullName.slice(0, 30)}...`
+      : fullName || '-';
+  })()}
+</TableCell>
+
 
               {/* Status */}
               <TableCell>

@@ -430,7 +430,7 @@ useEffect(() => {
           <Formik
            innerRef={formikRef}
             initialValues={initialFormData}
-             enableReinitialize={true}
+            //  enableReinitialize={true}
             onSubmit={handleSubmit}
           >
             {(formik) => (
@@ -494,7 +494,8 @@ useEffect(() => {
                     {activeStep === steps.length - 1 ? (
                       <Button
                         variant="contained"
-                        type="submit"
+                        type="button"
+                        onClick={()=>handleSubmit(formik?.values)}
                         startIcon={<Save />}
                         sx={{
                           px: 4,
@@ -510,6 +511,7 @@ useEffect(() => {
                       </Button>
                     ) : (
                       <Button
+                       type="button"
                         variant="contained"
                         onClick={() => handleNext(formik)}
                         endIcon={<ArrowForward />}
